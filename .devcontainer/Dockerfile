@@ -31,6 +31,19 @@ RUN \
 # Source ROS environment automatically
 RUN echo "source /opt/ros/${ROS_DISTRO}/setup.bash # ROS_SETUP_SCRIPT" >> /home/$USERNAME/.bashrc
 
+WORKDIR /home/$USERNAME
+
+# Install dependecies for PX4 Firmware
+RUN git clone https://github.com/PX4/PX4-Autopilot --recursive Firmware
+
+WORKDIR /home/$USERNAME/Firmware
+# Install PX4 "common" dependencies.
+RUN ./Tools/setup/ubuntu.sh --no-sim-tools --no-nuttx
+
+# Gstreamer plugins (for Gazebo camera)
+RUN sudo apt install gstreamer1.0-plugins-bad gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-ugly libgstreamer-plugins-base1.0-dev
+
+
 ENV SHELL=/bin/bash
 USER $USERNAME
 
