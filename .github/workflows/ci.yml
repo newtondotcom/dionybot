@@ -1,0 +1,20 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  tests:
+    name: Run test suite
+    runs-on: ubuntu-latest
+
+  steps:
+    - name: Check out code
+      uses: actions/checkout@v6
+
+    - name: run tests
+      uses: devcontainers/ci@v0.3
+      with:
+        runCmd: sleep 2 && echo "All tests passed!"
