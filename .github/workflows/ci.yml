@@ -4,17 +4,16 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
-  tests:
-    name: Run test suite
+  test:
     runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v6
 
-  steps:
-    - name: Check out code
-      uses: actions/checkout@v6
-
-    - name: run tests
-      uses: devcontainers/ci@v0.3
-      with:
-        runCmd: sleep 2 && echo "All tests passed!"
+      - name: run tests
+        uses: devcontainers/ci@v0.3
+        with:
+          runCmd: sleep 2 && echo "All tests passed!"
