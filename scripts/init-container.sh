@@ -11,8 +11,13 @@ WORKSPACE_PATH=${PWD}
 WORKSPACE_SETUP_SCRIPT=${WORKSPACE_PATH}/install/setup.bash
 
 # PX4 and Gazebo related setup
+cd $HOME
+git clone https://github.com/PX4/PX4-Autopilot --recursive Firmware
+cd Firmware
+./Tools/setup/ubuntu.sh --no-sim-tools --no-nuttx
+
 ## This is necessary to prevent some Qt-related errors (feel free to try to omit it)
-export QT_X11_NO_MITSHM=1
+# export QT_X11_NO_MITSHM=1
 
 ## Build PX4 Firmware along with the workspace
 info "Building PX4 Firmware..."
