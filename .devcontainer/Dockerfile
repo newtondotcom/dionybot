@@ -41,7 +41,7 @@ WORKDIR /home/$USERNAME/Firmware
 RUN ./Tools/setup/ubuntu.sh --no-sim-tools --no-nuttx
 
 # Gstreamer plugins (for Gazebo camera)
-RUN sudo apt install gstreamer1.0-plugins-bad gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-ugly libgstreamer-plugins-base1.0-dev
+RUN apt install gstreamer1.0-plugins-bad gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-ugly libgstreamer-plugins-base1.0-dev
 
 
 ENV SHELL=/bin/bash
