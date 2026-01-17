@@ -1,4 +1,4 @@
-FROM --platform=linux/${TARGETARCH} ros:jazzy-ros-base
+FROM --platform=linux/${TARGETARCH} ros:kilted-ros-base
 
 ARG USERNAME=rosuser
 ARG USER_UID=1000
