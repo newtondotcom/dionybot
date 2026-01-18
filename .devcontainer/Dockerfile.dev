@@ -1,0 +1,125 @@
+FROM --platform=linux/${TARGETARCH} ros:jazzy-ros-base
+
+ARG USERNAME=rosuser
+ARG USER_UID=1000
+ARG USER_GID=$USER_UID
+ARG WAYLAND_DISPLAY=""
+
+# Delete user if it exists in container (e.g Ubuntu Noble: ubuntu)
+RUN if id -u $USER_UID; then userdel `id -un $USER_UID`; fi
+
+# Create the user
+RUN \
+  groupadd --gid $USER_GID $USERNAME \
+  && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME
+
+# Install sudo and add user to sudoers
+RUN apt-get update \
+  && apt-get install -y sudo \
+  && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
+  && chmod 0440 /etc/sudoers.d/$USERNAME
+
+# Install dependencies and some tools
+RUN \
+  --mount=type=cache,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,target=/var/lib/apt,sharing=locked \
+  apt-get update \
+  && apt-get upgrade -y \
+  && apt-get install --no-install-recommends -y \
+    ssh git bash ccache htop gdb wget curl \
+    python3 python3-pip python3-venv python3-debugpy
+
+# Source ROS environment automatically
+RUN echo "source /opt/ros/${ROS_DISTRO}/setup.bash # ROS_SETUP_SCRIPT" >> /home/$USERNAME/.bashrc
+
+ENV SHELL=/bin/bash
+
+# Update repos (from scripts/update-repos.sh)
+RUN apt-get update \
+  && rosdep --rosdistro=${ROS_DISTRO} update \
+  && sudo -u $USERNAME colcon mixin add default https://raw.githubusercontent.com/colcon/colcon-mixin-repository/master/index.yaml || true \
+  && sudo -u $USERNAME colcon mixin update default || true
+
+# Install dependencies (from scripts/install-deps.sh)
+RUN apt-get install --no-install-recommends -y \
+    gstreamer1.0-plugins-bad gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-ugly libgstreamer-plugins-base1.0-dev \
+    ros-${ROS_DISTRO}-nav2-bringup ros-${ROS_DISTRO}-navigation2 \
+    ros-${ROS_DISTRO}-turtlebot3*
+
+# Install qtwayland5 conditionally (from scripts/install-deps.sh)
+RUN if [ -n "$WAYLAND_DISPLAY" ]; then \
+      apt-get install --no-install-recommends -y qtwayland5 || true; \
+    fi
+
+# Install Python packages (from scripts/install-deps.sh)
+RUN pip3 install --break --user -U empy==3.3.4 pyros-genmsg setuptools
+
+# Set workspace directory and ensure proper ownership
+RUN mkdir -p /workspaces/ros2-px4-devcontainer && chown -R $USERNAME:$USERNAME /workspaces
+WORKDIR /workspaces/ros2-px4-devcontainer
+
+# Ensure USER is set and switch to user for workspace operations
+ENV USER=$USERNAME
+USER $USERNAME
+
+# Clone PX4 Firmware (from scripts/init-container.sh)
+RUN if [ ! -d "Firmware" ]; then \
+      git clone https://github.com/PX4/PX4-Autopilot --recursive Firmware > /dev/null 2>&1 || true; \
+    fi
+
+# Run PX4 setup and build (from scripts/init-container.sh)
+RUN cd Firmware \
+  && ./Tools/setup/ubuntu.sh > /dev/null 2>&1 || true \
+  && make px4_sitl > /dev/null 2>&1 || true
+
+# Install Micro XRCE-DDS Agent & Client (from scripts/init-container.sh)
+RUN if [ ! -d "Micro-XRCE-DDS-Agent" ]; then \
+      git clone -b v2.4.3 https://github.com/eProsima/Micro-XRCE-DDS-Agent.git Micro-XRCE-DDS-Agent > /dev/null 2>&1 || true; \
+    fi \
+  && cd Micro-XRCE-DDS-Agent \
+  && mkdir -p build \
+  && cd build \
+  && cmake .. > /dev/null 2>&1 || true \
+  && make > /dev/null 2>&1 || true \
+  && sudo make install > /dev/null 2>&1 || true \
+  && sudo ldconfig || true
+
+# Install px4_msgs & px4_ros_com (from scripts/init-container.sh)
+RUN mkdir -p src \
+  && if [ ! -d "src/px4_msgs" ]; then \
+       git clone https://github.com/PX4/px4_msgs.git src/px4_msgs > /dev/null 2>&1 || true; \
+     fi \
+  && if [ ! -d "src/px4_ros_com" ]; then \
+       git clone https://github.com/PX4/px4_ros_com.git src/px4_ros_com > /dev/null 2>&1 || true; \
+     fi
+
+# Add PX4 ROS 2 Message Translation Node (from scripts/init-container.sh)
+RUN if [ -f "Firmware/Tools/copy_to_ros_ws.sh" ]; then \
+      Firmware/Tools/copy_to_ros_ws.sh . > /dev/null 2>&1 || true; \
+    fi
+
+# Install rosdep dependencies (from scripts/install-deps.sh)
+RUN if [ -d "src" ]; then \
+      rosdep install --from-paths src --ignore-src -y || true; \
+    fi
+
+# Build workspace (from scripts/build.sh)
+RUN colcon --log-level info build \
+    --mixin debug ccache compile-commands gold \
+    --symlink-install \
+    --event-handlers "console_direct+" \
+    --cmake-args -DMY_CPP_NODE_FLAG=ON || true
+
+# Setup .bashrc for PX4 + Gazebo (from scripts/init-container.sh)
+
+# PX4_GAZEBO_SETUP
+RUN . "$HOME/Firmware/Tools/simulation/gazebo-classic/setup_gazebo.bash" "$HOME/Firmware" "$HOME/Firmware/build/px4_sitl_default"
+RUN echo "export GAZEBO_MODEL_PATH=\"${GAZEBO_MODEL_PATH}:/workspaces/ros2-px4-devcontainer/src/avoidance/avoidance/sim/models:/workspaces/ros2-px4-devcontainer/src/avoidance/avoidance/sim/worlds\"" >> /home/$USERNAME/.bashrc
+RUN echo "export GAZEBO_MODEL_PATH=\"${GAZEBO_MODEL_PATH}:/opt/ros/jazzy/share/turtlebot3_gazebo/models\"" >> /home/$USERNAME/.bashrc
+RUN echo "export TURTLEBOT3_MODEL=burger" >> /home/$USERNAME/.bashrc
+RUN echo "export ROS_PACKAGE_PATH=\"${ROS_PACKAGE_PATH}:$HOME/Firmware\"" >> /home/$USERNAME/.bashrc
+
+RUN echo "source /workspaces/ros2-px4-devcontainer/install/setup.bash # WORKSPACE_SETUP_SCRIPT" >> /home/$USERNAME/.bashrc; 
+RUN echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> /home/$USERNAME/.bashrc
+
+CMD ["/bin/bash"]
