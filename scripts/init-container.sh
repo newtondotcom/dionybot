@@ -39,6 +39,12 @@ make
 sudo make install
 sudo ldconfig /usr/local/lib/
 
+# Install px4_msgs & px4_ros_com
+PX4_MSGS_PATH=${WORKSPACE_PATH}/src/px4_msgs
+git clone https://github.com/PX4/px4_msgs.git "${PX4_MSGS_PATH}" &> /dev/null
+PX4_ROS_COM_PATH=${WORKSPACE_PATH}/src/px4_ros_com
+git clone https://github.com/PX4/px4_ros_com.git "${PX4_ROS_COM_PATH}" &> /dev/null
+
 ## Setup some more Gazebo-related environment variables
 info "Setting up .bashrc for PX4 + Gazebo..."
 
