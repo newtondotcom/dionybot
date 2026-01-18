@@ -14,22 +14,23 @@ info "Installing apt packages..."
 # QT5 deps for Wayland (only if running on Wayland)
 if [ -n "${WAYLAND_DISPLAY}" ]; then
     info "Installing qtwayland5 for Wayland support..."
-    sudo apt-get install --no-install-recommends -y qtwayland5 || fatal "Failed to install qtwayland5"
+    sudo apt-get install --no-install-recommends -qq -y qtwayland5 || fatal "Failed to install qtwayland5"
 else
     info "Skipping qtwayland5 installation (not running on Wayland)"
 fi
 # Gstreamer plugins (for Gazebo camera)
-sudo apt-get install --no-install-recommends -y gstreamer1.0-plugins-bad gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-ugly libgstreamer-plugins-base1.0-dev || fatal "Failed to install gstreamer plugins"
+sudo apt-get install --no-install-recommends -qq -y gstreamer1.0-plugins-bad gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-ugly libgstreamer-plugins-base1.0-dev || fatal "Failed to install gstreamer plugins"
 
 # Install nav2 package
-sudo apt-get install --no-install-recommends -y ros-${ROS_DISTRO}-nav2-bringup ros-${ROS_DISTRO}-navigation2 || fatal "Failed to install nav2 package"
+sudo apt-get install --no-install-recommends -qq -y ros-${ROS_DISTRO}-nav2-bringup ros-${ROS_DISTRO}-navigation2 || fatal "Failed to install nav2 package"
 
 # Install turtlebot3 package
-sudo apt-get install --no-install-recommends -y ros-${ROS_DISTRO}-turtlebot3* || fatal "Failed to install turtlebot3 package"
+sudo apt-get install --no-install-recommends -qq -y ros-${ROS_DISTRO}-turtlebot3* || fatal "Failed to install turtlebot3 package"
 
 info "Installing python packages..."
 # Uncomment and modify below line to install python packages
 # python3 -m pip install PACKAGE1 PACKAGE2 || fatal "Failed to install python packages"
+python3 -m pip install --user -U empy==3.3.4 pyros-genmsg setuptools || fatal "Failed to install python packages"
 
 info "Installing rosdep dependencies..."
 rosdep install --from-paths src --ignore-src -y || fatal "Failed to install rosdep dependencies"
