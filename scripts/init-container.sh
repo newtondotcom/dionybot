@@ -10,7 +10,7 @@ $SCRIPT_DIR/install-deps.sh
 WORKSPACE_PATH=${PWD}
 WORKSPACE_SETUP_SCRIPT=${WORKSPACE_PATH}/install/setup.bash
 
-PX4_FIRMWARE_PATH=${WORKSPACE_PATH}/src/Firmware
+PX4_FIRMWARE_PATH=${WORKSPACE_PATH}/Firmware
 if [ ! -d "${PX4_FIRMWARE_PATH}" ]; then
     git clone https://github.com/PX4/PX4-Autopilot --recursive "${PX4_FIRMWARE_PATH}" &> /dev/null
 fi
@@ -57,16 +57,16 @@ info "Setting up .bashrc for PX4 + Gazebo..."
 
 grep -qF 'PX4_GAZEBO_SETUP' "$HOME/.bashrc" || cat << EOF >> "$HOME/.bashrc"
 # PX4_GAZEBO_SETUP
-if [ -f "\$HOME/src/Firmware/Tools/simulation/gazebo-classic/setup_gazebo.bash" ]; then
-  . "\$HOME/src/Firmware/Tools/simulation/gazebo-classic/setup_gazebo.bash" \
-    "\$HOME/src/Firmware" \
-    "\$HOME/src/Firmware/build/px4_sitl_default"
+if [ -f "\$HOME/Firmware/Tools/simulation/gazebo-classic/setup_gazebo.bash" ]; then
+  . "\$HOME/Firmware/Tools/simulation/gazebo-classic/setup_gazebo.bash" \
+    "\$HOME/Firmware" \
+    "\$HOME/Firmware/build/px4_sitl_default"
 fi
 
 export GAZEBO_MODEL_PATH="\${GAZEBO_MODEL_PATH}:${WORKSPACE_PATH}/src/avoidance/avoidance/sim/models:${WORKSPACE_PATH}/src/avoidance/avoidance/sim/worlds"
 export GAZEBO_MODEL_PATH="\${GAZEBO_MODEL_PATH}:/opt/ros/jazzy/share/turtlebot3_gazebo/models"
 export TURTLEBOT3_MODEL=burger
-export ROS_PACKAGE_PATH="\${ROS_PACKAGE_PATH}:\$HOME/src/Firmware"
+export ROS_PACKAGE_PATH="\${ROS_PACKAGE_PATH}:\$HOME/Firmware"
 EOF
 
 info "Setting up .bashrc to source ${WORKSPACE_SETUP_SCRIPT}..."

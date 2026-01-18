@@ -4,3 +4,9 @@ build
 install
 log
 __pycache__
+Firmware/
+src/px4_msgs/
+src/px4_ros_com/
+src/px4_msgs_old/
+src/translation_node/
+Micro-XRCE-DDS-Agent/
