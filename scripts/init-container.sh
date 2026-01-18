@@ -45,6 +45,13 @@ git clone https://github.com/PX4/px4_msgs.git "${PX4_MSGS_PATH}" &> /dev/null
 PX4_ROS_COM_PATH=${WORKSPACE_PATH}/src/px4_ros_com
 git clone https://github.com/PX4/px4_ros_com.git "${PX4_ROS_COM_PATH}" &> /dev/null
 
+
+cd "${WORKSPACE_PATH}"
+
+# Add PX4 ROS 2 Message Translation Node - required above PX4 v1.16
+# https://docs.px4.io/main/en/ros2/px4_ros2_msg_translation_node
+${PX4_FIRMWARE_PATH}/Tools/copy_to_ros_ws.sh .
+
 ## Setup some more Gazebo-related environment variables
 info "Setting up .bashrc for PX4 + Gazebo..."
 
@@ -67,5 +74,4 @@ grep -qF 'WORKSPACE_SETUP_SCRIPT' $HOME/.bashrc || echo "source ${WORKSPACE_SETU
 
 
 # Allow initial setup to complete successfully even if build fails
-cd "${WORKSPACE_PATH}"
 $SCRIPT_DIR/build.sh || true
