@@ -28,6 +28,17 @@ info "Building PX4 Firmware..."
 #DONT_RUN=1 make px4_sitl gz_rover_differential
 make px4_sitl
 
+# Install Micro XRCE-DDS Agent & Client for PX4
+XRCEDDS_AGENT_PATH=${WORKSPACE_PATH}/Micro-XRCE-DDS-Agent
+git clone -b v2.4.3 https://github.com/eProsima/Micro-XRCE-DDS-Agent.git "${XRCEDDS_AGENT_PATH}" &> /dev/null
+cd "${XRCEDDS_AGENT_PATH}"
+mkdir build
+cd build
+cmake ..
+make
+sudo make install
+sudo ldconfig /usr/local/lib/
+
 ## Setup some more Gazebo-related environment variables
 info "Setting up .bashrc for PX4 + Gazebo..."
 
