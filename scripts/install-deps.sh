@@ -20,21 +20,21 @@ else
 fi
 
 # Gstreamer plugins (for Gazebo camera)
-sudo apt-get install --no-install-recommends -qq -y gstreamer1.0-plugins-bad gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-ugly libgstreamer-plugins-base1.0-dev || fatal "Failed to install gstreamer plugins"
+#sudo apt-get install --no-install-recommends -qq -y gstreamer1.0-plugins-bad gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-ugly libgstreamer-plugins-base1.0-dev || fatal "Failed to install gstreamer plugins"
 
 # QGroundControl dependencies
-sudo apt-get install --no-install-recommends -qq -y libfuse2 libxcb-xinerama0 libxkbcommon-x11-0 libxcb-cursor-dev || fatal "Failed to install QGroundControl dependencies"
+#sudo apt-get install --no-install-recommends -qq -y libfuse2 libxcb-xinerama0 libxkbcommon-x11-0 libxcb-cursor-dev || fatal "Failed to install QGroundControl dependencies"
 
 # Install nav2 package
-sudo apt-get install --no-install-recommends -qq -y ros-${ROS_DISTRO}-nav2-bringup ros-${ROS_DISTRO}-navigation2 || fatal "Failed to install nav2 package"
+#sudo apt-get install --no-install-recommends -qq -y ros-${ROS_DISTRO}-nav2-bringup ros-${ROS_DISTRO}-navigation2 || fatal "Failed to install nav2 package"
 
 # Install turtlebot3 package
-sudo apt-get install --no-install-recommends -qq -y ros-${ROS_DISTRO}-turtlebot3* || fatal "Failed to install turtlebot3 package"
+#sudo apt-get install --no-install-recommends -qq -y ros-${ROS_DISTRO}-turtlebot3* || fatal "Failed to install turtlebot3 package"
 
 info "Installing python packages..."
 # Uncomment and modify below line to install python packages
 # python3 -m pip install PACKAGE1 PACKAGE2 || fatal "Failed to install python packages"
-python3 -m pip install --user -U empy==3.3.4 pyros-genmsg setuptools || fatal "Failed to install python packages"
+#python3 -m pip install --user -U empy==3.3.4 pyros-genmsg setuptools || fatal "Failed to install python packages"
 
 info "Installing rosdep dependencies..."
 rosdep install --from-paths src --ignore-src -y || fatal "Failed to install rosdep dependencies"

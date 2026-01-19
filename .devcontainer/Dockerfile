@@ -28,6 +28,17 @@ RUN \
     ssh git bash ccache htop gdb wget curl \
     python3 python3-pip python3-venv python3-debugpy
 
+RUN \
+  --mount=type=cache,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,target=/var/lib/apt,sharing=locked \
+  apt-get install --no-install-recommends -y \
+    gstreamer1.0-plugins-bad gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-ugly libgstreamer-plugins-base1.0-dev \
+    libfuse2 libxcb-xinerama0 libxkbcommon-x11-0 libxcb-cursor-dev \
+    ros-${ROS_DISTRO}-nav2-bringup ros-${ROS_DISTRO}-navigation2 \
+    ros-${ROS_DISTRO}-turtlebot3*
+    
+RUN python3 -m pip install --break --user -U empy==3.3.4 pyros-genmsg setuptools
+
 # Source ROS environment automatically
 RUN echo "source /opt/ros/${ROS_DISTRO}/setup.bash # ROS_SETUP_SCRIPT" >> /home/$USERNAME/.bashrc
 

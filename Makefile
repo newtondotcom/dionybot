@@ -12,8 +12,9 @@ bridge:
 sim:
 	cd Firmware && PX4_GZ_WORLD=bayland make px4_sitl gz_rover_differential
 
-QGroundControl:
-	./QGroundControl-x86_64.AppImage
+control:
+	cd squashfs-root && ./AppRun
+
 
 clean:
 	rm -rf Firmware
@@ -22,6 +23,7 @@ clean:
 	rm -rf src/px4_msgs_old
 	rm -rf src/translation_node
 	rm -rf Micro-XRCE-DDS-Agent
+	rm -rf squashfs-root
 
 list_topic:
 	ros2 topic list

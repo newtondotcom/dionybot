@@ -3,7 +3,7 @@
     "privileged": true,
     "remoteUser": "rosuser", // Make sure this is the same as the username in the Dockerfile and mounts below
     "build": {
-        "dockerfile": "Dockerfile.dev",
+        "dockerfile": "Dockerfile",
         "args": {
             // If needed, override target container architecture. 
             // For example, on Apple Silicon set below to amd64 to build and run container in x86 virtualization.
@@ -42,5 +42,6 @@
     "mounts": [
         "source=${localWorkspaceFolder}/.cache,target=/home/rosuser/.cache,type=bind",
         "source=${localEnv:XDG_RUNTIME_DIR}/${localEnv:WAYLAND_DISPLAY},target=/tmp/${localEnv:WAYLAND_DISPLAY},type=bind"
-    ]
+    ],
+    "onCreateCommand": "scripts/init-container.sh"
 }
