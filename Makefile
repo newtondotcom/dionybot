@@ -7,7 +7,7 @@ agent:
 	MicroXRCEAgent udp4 -p 8888
 
 sim:
-	cd Firmware && make px4_sitl gz_rover_differential
+	cd Firmware && PX4_GZ_WORLD=bayland make px4_sitl gz_rover_differential
 
 clean:
 	rm -rf Firmware
