@@ -18,8 +18,12 @@ if [ -n "${WAYLAND_DISPLAY}" ]; then
 else
     info "Skipping qtwayland5 installation (not running on Wayland)"
 fi
+
 # Gstreamer plugins (for Gazebo camera)
 sudo apt-get install --no-install-recommends -qq -y gstreamer1.0-plugins-bad gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-ugly libgstreamer-plugins-base1.0-dev || fatal "Failed to install gstreamer plugins"
+
+# QGroundControl dependencies
+sudo apt-get install --no-install-recommends -qq -y libfuse2 libxcb-xinerama0 libxkbcommon-x11-0 libxcb-cursor-dev || fatal "Failed to install QGroundControl dependencies"
 
 # Install nav2 package
 sudo apt-get install --no-install-recommends -qq -y ros-${ROS_DISTRO}-nav2-bringup ros-${ROS_DISTRO}-navigation2 || fatal "Failed to install nav2 package"
