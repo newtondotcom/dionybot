@@ -86,10 +86,10 @@ cp -r ${WORKSPACE_PATH}/src/dionybot/model/dionybot ${PX4_FIRMWARE_PATH}/Tools/s
     # && cp -r ${WORKSPACE_PATH}/src/dionybot/model/lidar_2d_v2 ${PX4_FIRMWARE_PATH}/Tools/simulation/gz/models/
 #cp ${WORKSPACE_PATH}/src/rtabmap_nav2_px4/world/turtlebot3_world.sdf ${PX4_FIRMWARE_PATH}/Tools/simulation/gz/worlds/
 
-cp ${WORKSPACE_PATH}/src/dionybot/config/50001_dionybot ${PX4_FIRMWARE_PATH}/ROMFS/px4fmu_common/init.d-posix/airframes/
-chmod +x /home/ubuntu/PX4-Autopilot/ROMFS/px4fmu_common/init.d-posix/airframes/50001_dionybot
+cp ${WORKSPACE_PATH}/src/dionybot/config/50001_gz_dionybot ${PX4_FIRMWARE_PATH}/ROMFS/px4fmu_common/init.d-posix/airframes/
+chmod +x ${PX4_FIRMWARE_PATH}/ROMFS/px4fmu_common/init.d-posix/airframes/50001_dionybot
 # add 50001_dionybot in CMakeLists.txt
-sed -i '/4001_gz_x500/a\    50001_dionybot' /home/ubuntu/PX4-Autopilot/ROMFS/px4fmu_common/init.d-posix/airframes/CMakeLists.txt
+sed -i '/50000_gz_rover_differential/a\    50001_gz_dionybot' /home/ubuntu/PX4-Autopilot/ROMFS/px4fmu_common/init.d-posix/airframes/CMakeLists.txt
   
 ## Setup some more Gazebo-related environment variables
 info "Setting up .bashrc for PX4 + Gazebo..."
