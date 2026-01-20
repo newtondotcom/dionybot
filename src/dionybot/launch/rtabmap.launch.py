@@ -12,8 +12,8 @@ def generate_launch_description():
     localization = LaunchConfiguration('localization')
 
     parameters={
-        'frame_id':'x500_rtab_0/base_footprint',
-        'odom_frame_id':'x500_rtab_0/odom',
+        'frame_id':'dionybot/base_footprint',
+        'odom_frame_id':'dionybot/odom',
         'odom_tf_linear_variance':0.001,
         'odom_tf_angular_variance':0.001,
         'subscribe_rgbd':True,

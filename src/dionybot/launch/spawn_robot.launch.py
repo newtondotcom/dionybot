@@ -1,11 +1,8 @@
 import os
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
-from launch.conditions import IfCondition
-from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch.actions import DeclareLaunchArgument
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution, Command
 from launch_ros.actions import Node
-from launch_ros.substitutions import FindPackageShare
 from ament_index_python.packages import get_package_share_directory
 
 def generate_launch_description():
@@ -16,7 +13,7 @@ def generate_launch_description():
     os.environ["GZ_SIM_RESOURCE_PATH"] += os.pathsep + gazebo_models_path
 
     model_arg = DeclareLaunchArgument(
-        'model', default_value='x500_rtab.urdf',
+        'model', default_value='dionybot.urdf',
         description='Name of the URDF description to load'
     )
 
@@ -27,9 +24,9 @@ def generate_launch_description():
 
     # Define the path to your URDF or Xacro file
     urdf_file_path = PathJoinSubstitution([
-        pkg_dionybot,  # Replace with your package name
+        pkg_dionybot,
         "urdf",
-        LaunchConfiguration('model')  # Replace with your URDF or Xacro file
+        LaunchConfiguration('model')  # URDF or Xacro file
     ])
 
     # Node to bridge /cmd_vel and /odom
@@ -38,24 +35,24 @@ def generate_launch_description():
         executable="parameter_bridge",
         arguments=[
             "/clock@rosgraph_msgs/msg/Clock@gz.msgs.Clock",
-            "/model/x500_rtab_0/odometry@nav_msgs/msg/Odometry@gz.msgs.Odometry",
+            "/model/dionybot/odometry@nav_msgs/msg/Odometry@gz.msgs.Odometry",
             "/camera@sensor_msgs/msg/Image@gz.msgs.Image",
             "/depth_camera@sensor_msgs/msg/Image@gz.msgs.Image",
             "/camera_info@sensor_msgs/msg/CameraInfo@gz.msgs.CameraInfo",
             "/depth_camera/points@sensor_msgs/msg/PointCloud2@gz.msgs.PointCloudPacked",
-            "/world/turtlebot3_world/model/x500_rtab_0/link/base_link/sensor/navsat_sensor/navsat@sensor_msgs/msg/NavSatFix@gz.msgs.NavSat",
-            "/world/turtlebot3_world/model/x500_rtab_0/link/base_link/sensor/imu_sensor/imu@sensor_msgs/msg/Imu@gz.msgs.IMU",
-            "/world/turtlebot3_world/model/x500_rtab_0/link/link/sensor/lidar_2d_v2/scan@sensor_msgs/msg/LaserScan@gz.msgs.LaserScan",
+            "/world/sonoma/model/dionybot/link/base_link/sensor/navsat_sensor/navsat@sensor_msgs/msg/NavSatFix@gz.msgs.NavSat",
+            "/world/sonoma/model/dionybot/link/base_link/sensor/imu_sensor/imu@sensor_msgs/msg/Imu@gz.msgs.IMU",
+            "/world/sonoma/model/dionybot/link/link/sensor/lidar_2d_v2/scan@sensor_msgs/msg/LaserScan@gz.msgs.LaserScan",
         ],
         output="screen",
         parameters=[
             {'use_sim_time': LaunchConfiguration('use_sim_time')},
         ],
         remappings=[
-            ('/world/turtlebot3_world/model/x500_rtab_0/link/link/sensor/lidar_2d_v2/scan', '/scan'),
-            ('/world/turtlebot3_world/model/x500_rtab_0/link/base_link/sensor/imu_sensor/imu', '/imu'),
-            ('/world/turtlebot3_world/model/x500_rtab_0/link/base_link/sensor/navsat_sensor/navsat', '/fix'),
-            ('/model/x500_rtab_0/odometry', '/odom'),
+            ('/world/sonoma/model/dionybot/link/link/sensor/lidar_2d_v2/scan', '/scan'),
+            ('/world/sonoma/model/dionybot/link/base_link/sensor/imu_sensor/imu', '/imu'),
+            ('/world/sonoma/model/dionybot/link/base_link/sensor/navsat_sensor/navsat', '/fix'),
+            ('/model/dionybot/odometry', '/odom'),
             ('/depth_camera/points', '/camera/depth_image/points'),
             ('/camera_info', '/camera/image/camera_info'),
         ]

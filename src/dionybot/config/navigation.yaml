@@ -10,7 +10,7 @@ amcl:
     alpha3: 0.05
     alpha4: 0.01
     alpha5: 0.04
-    base_frame_id: "x500_rtab_0/base_footprint"
+    base_frame_id: "dionybot/base_footprint"
     beam_skip_distance: 0.5
     beam_skip_error_threshold: 0.9
     beam_skip_threshold: 0.3
@@ -24,7 +24,7 @@ amcl:
     max_beams: 60
     max_particles: 2000
     min_particles: 500
-    odom_frame_id: "x500_rtab_0/odom"
+    odom_frame_id: "dionybot/odom"
     pf_err: 0.02
     pf_z: 0.85
     recovery_alpha_fast: 0.0
@@ -66,7 +66,7 @@ bt_navigator:
   ros__parameters:
     use_sim_time: True
     global_frame: map
-    robot_base_frame: x500_rtab_0/base_footprint
+    robot_base_frame: dionybot/base_footprint
     odom_topic: odom
     bt_loop_duration: 10
     default_server_timeout: 20
@@ -199,8 +199,8 @@ local_costmap:
   local_costmap:
     ros__parameters:
       use_sim_time: True
-      global_frame: x500_rtab_0/odom
-      robot_base_frame: x500_rtab_0/base_footprint
+      global_frame: dionybot/odom
+      robot_base_frame: dionybot/base_footprint
 
       update_frequency: 10.0
       publish_frequency: 5.0
@@ -265,7 +265,7 @@ global_costmap:
     ros__parameters:
       use_sim_time: True
       global_frame: map
-      robot_base_frame: x500_rtab_0/base_footprint
+      robot_base_frame: dionybot/base_footprint
 
       update_frequency: 1.0
       publish_frequency: 1.0
@@ -380,8 +380,8 @@ behavior_server:
     wait:
       plugin: "nav2_behaviors/Wait"
 
-    global_frame: x500_rtab_0/odom
-    robot_base_frame: x500_rtab_0/base_footprint
+    global_frame: dionybot/odom
+    robot_base_frame: dionybot/base_footprint
     transform_tolerance: 0.1
     simulate_ahead_time: 2.0
     max_rotational_vel: 0.3

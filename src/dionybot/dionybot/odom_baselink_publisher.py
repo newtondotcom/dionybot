@@ -74,8 +74,8 @@ class OdometryToTransformNode(Node):
         if self.loc_pos is not None and self.att is not None:
         
             self.t1.header.stamp = self.get_clock().now().to_msg()
-            self.t1.header.frame_id = 'x500_rtab_0/odom'
-            self.t1.child_frame_id = 'x500_rtab_0/base_footprint'
+            self.t1.header.frame_id = 'dionybot/odom'
+            self.t1.child_frame_id = 'dionybot/base_footprint'
 
             # Set the translation from the local position message
             self.t1.transform.translation.x = float(self.loc_pos.y)

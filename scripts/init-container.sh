@@ -88,7 +88,7 @@ ${PX4_FIRMWARE_PATH}/Tools/copy_to_ros_ws.sh .
 # Copy custom models to PX4 Gazebo models folder
 cp -r ${WORKSPACE_PATH}/src/dionybot/model/dionybot ${PX4_FIRMWARE_PATH}/Tools/simulation/gz/models/ \
     #&& cp -r ${WORKSPACE_PATH}/src/dionybot/model/OakD-Lite ${PX4_FIRMWARE_PATH}/Tools/simulation/gz/models/ \
-    #&& cp -r ${WORKSPACE_PATH}/src/dionybot/model/turtlebot3_world ${PX4_FIRMWARE_PATH}/Tools/simulation/gz/models/ \
+    #&& cp -r ${WORKSPACE_PATH}/src/dionybot/model/sonoma ${PX4_FIRMWARE_PATH}/Tools/simulation/gz/models/ \
     # && cp -r ${WORKSPACE_PATH}/src/dionybot/model/lidar_2d_v2 ${PX4_FIRMWARE_PATH}/Tools/simulation/gz/models/
 cp ${WORKSPACE_PATH}/src/dionybot/world/sonoma.sdf ${PX4_FIRMWARE_PATH}/Tools/simulation/gz/worlds/
 
