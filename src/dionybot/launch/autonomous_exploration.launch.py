@@ -13,7 +13,7 @@ from launch.conditions import IfCondition
 
 def generate_launch_description() -> LaunchDescription:
     # custom package for autonomous exploration drone simulation
-    pkg_nav2_slam_px4 = get_package_share_directory('rtabmap_nav2_px4')
+    pkg_nav2_slam_px4 = get_package_share_directory('dionybot')
     nav2_slam_px4_launch_dir = os.path.join(pkg_nav2_slam_px4, 'launch')
     # Get the keyboard teleop package for PX4
     px4_keyboard_teleopdir = get_package_share_directory('px4_offboard')

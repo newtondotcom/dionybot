@@ -63,6 +63,13 @@ fi
 #    cd "${ROS_GZ_PATH}"
 #    git pull
 #fi
+PX4_ROS2_INTERFACE_PATH=${WORKSPACE_PATH}/src/px4_ros2_interface-lib
+if [ ! -d "${PX4_ROS2_INTERFACE_PATH}" ]; then
+git clone --recursive https://github.com/Auterion/px4-ros2-interface-lib "${PX4_ROS2_INTERFACE_PATH}" &> /dev/null
+else
+    cd "${PX4_ROS2_INTERFACE_PATH}"
+    git pull
+fi
 
 cd "${WORKSPACE_PATH}"
 
@@ -83,7 +90,7 @@ cp -r ${WORKSPACE_PATH}/src/dionybot/model/dionybot ${PX4_FIRMWARE_PATH}/Tools/s
     #&& cp -r ${WORKSPACE_PATH}/src/dionybot/model/OakD-Lite ${PX4_FIRMWARE_PATH}/Tools/simulation/gz/models/ \
     #&& cp -r ${WORKSPACE_PATH}/src/dionybot/model/turtlebot3_world ${PX4_FIRMWARE_PATH}/Tools/simulation/gz/models/ \
     # && cp -r ${WORKSPACE_PATH}/src/dionybot/model/lidar_2d_v2 ${PX4_FIRMWARE_PATH}/Tools/simulation/gz/models/
-cp ${WORKSPACE_PATH}/src/rtabmap_nav2_px4/world/sonoma.sdf ${PX4_FIRMWARE_PATH}/Tools/simulation/gz/worlds/
+cp ${WORKSPACE_PATH}/src/dionybot/world/sonoma.sdf ${PX4_FIRMWARE_PATH}/Tools/simulation/gz/worlds/
 
 cp ${WORKSPACE_PATH}/src/dionybot/config/50001_gz_dionybot ${PX4_FIRMWARE_PATH}/ROMFS/px4fmu_common/init.d-posix/airframes/
 chmod +x ${PX4_FIRMWARE_PATH}/ROMFS/px4fmu_common/init.d-posix/airframes/50001_dionybot

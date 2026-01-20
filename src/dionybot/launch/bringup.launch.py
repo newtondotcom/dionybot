@@ -17,7 +17,7 @@ def generate_launch_description():
 
     use_sim_time = LaunchConfiguration('use_sim_time')
 
-    rtabmap_pkg_share = FindPackageShare('rtabmap_nav2_px4')
+    rtabmap_pkg_share = FindPackageShare('dionybot')
     px4_off_pkg_share = FindPackageShare('px4_offboard')
 
     spawn_robot = IncludeLaunchDescription(
