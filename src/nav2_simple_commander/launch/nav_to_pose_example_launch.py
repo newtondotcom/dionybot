@@ -50,7 +50,7 @@ def generate_launch_description() -> LaunchDescription:
     )
 
     # start the simulation
-    world_sdf = tempfile.mktemp(prefix='nav2_', suffix='.sdf')
+    world_sdf = tempfile.mkstemp(prefix='nav2_', suffix='.sdf')
     world_sdf_xacro = ExecuteProcess(
         cmd=['xacro', '-o', world_sdf, ['headless:=', headless], world])
     start_gazebo_server_cmd = IncludeLaunchDescription(
