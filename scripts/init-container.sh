@@ -28,7 +28,6 @@ export USER=${USER:-$(whoami)}
 
 ## Build PX4 Firmware along with the workspace
 info "Building PX4 Firmware..."
-#DONT_RUN=1 make px4_sitl gz_rover_differential
 make px4_sitl
 
 # Install Micro XRCE-DDS Agent & Client for PX4
@@ -84,7 +83,7 @@ cp -r ${WORKSPACE_PATH}/src/dionybot/model/dionybot ${PX4_FIRMWARE_PATH}/Tools/s
     #&& cp -r ${WORKSPACE_PATH}/src/dionybot/model/OakD-Lite ${PX4_FIRMWARE_PATH}/Tools/simulation/gz/models/ \
     #&& cp -r ${WORKSPACE_PATH}/src/dionybot/model/turtlebot3_world ${PX4_FIRMWARE_PATH}/Tools/simulation/gz/models/ \
     # && cp -r ${WORKSPACE_PATH}/src/dionybot/model/lidar_2d_v2 ${PX4_FIRMWARE_PATH}/Tools/simulation/gz/models/
-#cp ${WORKSPACE_PATH}/src/rtabmap_nav2_px4/world/turtlebot3_world.sdf ${PX4_FIRMWARE_PATH}/Tools/simulation/gz/worlds/
+cp ${WORKSPACE_PATH}/src/rtabmap_nav2_px4/world/sonoma.sdf ${PX4_FIRMWARE_PATH}/Tools/simulation/gz/worlds/
 
 cp ${WORKSPACE_PATH}/src/dionybot/config/50001_gz_dionybot ${PX4_FIRMWARE_PATH}/ROMFS/px4fmu_common/init.d-posix/airframes/
 chmod +x ${PX4_FIRMWARE_PATH}/ROMFS/px4fmu_common/init.d-posix/airframes/50001_dionybot

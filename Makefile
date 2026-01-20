@@ -10,7 +10,7 @@ bridge:
 	ros2 launch ros_gz_bridge ros_gz_bridge.launch.py bridge_name:=ros_gz_bridge config_file:=src/dionybot/config/bridge.yml
 
 sim:
-	cd Firmware && PX4_GZ_WORLD=bayland make px4_sitl gz_rover_differential
+	cd Firmware && PX4_GZ_WORLD=sonoma make px4_sitl gz_dionybot
 
 control:
 	cd squashfs-root && ./AppRun

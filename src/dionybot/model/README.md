@@ -1,6 +1,6 @@
 # TO add on build
 
-> a copier dans [init-container.sh](../../scripts/init-container.sh) dynamiquemernt
+> a copier dans [init-container.sh](../../../scripts/init-container.sh) dynamiquemernt
 
 - https://github.com/PX4/PX4-gazebo-models/tree/main/models/OakD-Lite
 - https://github.com/PX4/PX4-gazebo-models/tree/main/models/lidar_2d_v2
@@ -9,7 +9,7 @@
 - sonar for range :
 
 ```xml
-<sensor name="ultrasonic" type="gpu_lidar">
+<sensor name="front_left" type="gpu_lidar">
   <topic>ultrasonic</topic>
   <update_rate>20</update_rate>
   <lidar>
@@ -19,8 +19,8 @@
       <max_angle>0</max_angle>
     </horizontal>
     <range>
-      <min>0.02</min>
-      <max>4.0</max>
+      <min>0.08</min>
+      <max>30.0</max>
     </range>
   </lidar>
 </sensor>
