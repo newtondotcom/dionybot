@@ -89,20 +89,28 @@ class OffboardControl(Node):
 
 
         #Create publishers
+
+        ## Sends OffboardControlMode messages to tell PX4 which setpoint types (position, velocity, etc.) are being driven while in Offboard mode. Must be published regularly to keep Offboard active.
         self.publisher_offboard_mode = self.create_publisher(OffboardControlMode, '/fmu/in/offboard_control_mode', qos_profile)
-        self.publisher_velocity = self.create_publisher(Twist, '/fmu/in/setpoint_velocity/cmd_vel_unstamped', qos_profile)
+        
+        # not used
+        #self.publisher_velocity = self.create_publisher(Twist, '/fmu/in/setpoint_velocity/cmd_vel_unstamped', qos_profile)
+
+        ## Publishes TrajectorySetpoint messages with velocities (and NaN positions) in the world frame; this is what actually drives the vehicle in Offboard mode in cmdloop_callback.
         self.publisher_trajectory = self.create_publisher(TrajectorySetpoint, '/fmu/in/trajectory_setpoint', qos_profile)
+
+        ## Sends VehicleCommand messages for arming/disarming, mode changes (e.g., Offboard), takeoff, etc.; used by the FSM for arming/takeoff/mode switching.
         self.vehicle_command_publisher_ = self.create_publisher(VehicleCommand, "/fmu/in/vehicle_command", 10)
 
         
-        #creates callback function for the arm timer
-        # period is arbitrary, just should be more than 2Hz
+        ## Creates callback function for the arm timer
+        ### period is arbitrary, just should be more than 2Hz
         arm_timer_period = .1 # seconds
         self.arm_timer_ = self.create_timer(arm_timer_period, self.arm_timer_callback)
 
-        # creates callback function for the command loop
-        # period is arbitrary, just should be more than 2Hz. Because live controls rely on this, a higher frequency is recommended
-        # commands in cmdloop_callback won't be executed if the vehicle is not in offboard mode
+        ## Creates callback function for the command loop
+        ### period is arbitrary, just should be more than 2Hz. Because live controls rely on this, a higher frequency is recommended
+        ### commands in cmdloop_callback won't be executed if the vehicle is not in offboard mode
         timer_period = 0.02  # seconds
         self.timer = self.create_timer(timer_period, self.cmdloop_callback)
 
@@ -124,8 +132,8 @@ class OffboardControl(Node):
         self.arm_message = msg.data
         self.get_logger().info(f"Arm Message: {self.arm_message}")
 
-    #callback function that arms, takes off, and switches to offboard mode
-    #implements a finite state machine
+    # Callback function that arms, takes off, and switches to offboard mode
+    ## Implements a finite state machine
     def arm_timer_callback(self):
 
         match self.current_state:
