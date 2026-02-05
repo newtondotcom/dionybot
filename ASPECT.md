@@ -13,3 +13,5 @@ GPS + signal light hanginig on top of a flexible high pole
 Red button to cut movement
 
 arched bars to hold cameras ? central dome for security ?
+
+CE marking
